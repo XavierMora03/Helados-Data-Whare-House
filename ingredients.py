@@ -9,7 +9,7 @@ def get_ingredients(row):
     """
     li = [] 
     for ingredient in row.ingredients.split(','):
-        li.append([row.key,ingredient.strip().replace('"','')])
+        li.append([row.key,ingredient.strip().replace('"','')])]))
     return li
 
 ingredients = products.apply(get_ingredients, axis=1)

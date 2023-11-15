@@ -33,6 +33,3 @@ titleDf = pd.DataFrame(wordTitleTable, columns=['id','key','word','count'])
 
 textDf.to_csv('text_words.csv',index=False)
 titleDf.to_csv('title_words.csv',index=False)
-
-
-

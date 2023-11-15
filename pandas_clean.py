@@ -3,7 +3,7 @@ import numpy as np
 reviews = pd.read_csv("./archive/combined/reviews.csv")
 products = pd.read_csv("./archive/combined/products.csv")
 
-reviews_text_labels = ['text','title','likes']
+reviews_text_labels = ['text','title']
 products_text_labels = ['name','subhead','description','ingredients']
 
 reviews.date = pd.to_datetime(reviews.date, format='%Y-%m-%d')
@@ -33,6 +33,7 @@ def transformProducts(df,lables):
 
 
 reviews = transformReviews(reviews,reviews_text_labels)
+reviews = tolower(reviews,'likes')
 products = transformProducts(products,products_text_labels)
 
 reviews.index.name = 'id'
