@@ -20,6 +20,10 @@ def see_row(row):
     update_dict(row.text)
     update_dict(row.title)
 
+
+def getDict():
+    return wordDict
+
 reviews.apply(see_row,axis=1)
 
 worddf = pd.DataFrame(wordDict.keys(),columns=['word'],index=wordDict.values())
