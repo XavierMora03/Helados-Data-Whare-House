@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-reviews = pd.read_csv("./archive/combined/reviews.csv")
+reviews = pd.read_csv("./archive/combined/reviews.csv",encoding='utf-8')
 products = pd.read_csv("./archive/combined/products.csv")
 
 reviews_text_labels = ['text','title']
@@ -40,4 +40,4 @@ reviews.index.name = 'id'
 reviews.reset_index(inplace=True)
 
 products.to_csv('products_clean.csv',index=False)
-reviews.to_csv('reviews_clean.csv',index=False)
+reviews.to_csv('reviews_clean.csv',encoding='utf-8-sig',index=False)

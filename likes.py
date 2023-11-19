@@ -11,11 +11,11 @@ def get_ingredients(row):
         return []
     li = [] 
     for ingredient in row.likes.split(','):
-        li.append([row.key,ingredient.strip().replace('"','')])
+        li.append([row.id,row.key,ingredient.strip().replace('"','')])
     return li
 
 ingredients = products.apply(get_ingredients, axis=1)
 ingredients = list(itertools.chain.from_iterable(ingredients))
 
-ingredients = pd.DataFrame(ingredients, columns=['key','likes'])
+ingredients = pd.DataFrame(ingredients, columns=['id','key','likes'])
 ingredients.to_csv('./likes.csv', index=False)

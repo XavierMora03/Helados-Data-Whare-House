@@ -1,0 +1,1 @@
+SELECT products.brand,ingredients.ingredient, COUNT(ingredients.ingredient) AS count FROM products JOIN ingredients ON products.[key] = ingredients.[key] GROUP BY brand,ingredients.ingredient;
