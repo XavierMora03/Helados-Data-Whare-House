@@ -4,6 +4,7 @@ import itertools
 
 reviews = pd.read_csv("reviews_clean.csv")
 
+#this file makes the database from all the text/title registers, referencing the review ID, and the times the word has appeard
 def rowTitle(row):
     if(row.title is np.nan):
         return []
