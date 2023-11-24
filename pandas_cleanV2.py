@@ -13,7 +13,7 @@ reviews.date = pd.to_datetime(reviews.date, format='%Y-%m-%d')
 def cleanAfterTokenize(df, labels):
     for l in labels:
         df[l] = df[l].str.lower()
-        df[l] = df[l].str.replace(r'[-.?!:;|0-9]','',regex=True)
+        df[l] = df[l].str.replace(r'[-.?!’:;|0-9]',' ',regex=True)
     return df
 
 

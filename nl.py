@@ -8,49 +8,59 @@ from nltk.probability import FreqDist
 from nltk.stem import WordNetLemmatizer
 import numpy as np
 from nltk.stem import wordnet, WordNetLemmatizer
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords, words
 import re
-
+import itertools
 
 stem = WordNetLemmatizer()
 reviews = pd.read_csv('reviews_clean.csv')
-no_punctuation_regex = r'[-.?!,:;()|0-9]'
-reviews['text'] = reviews.text.str.replace(no_punctuation_regex,'',regex=True)
-reviews['title'] = reviews.title.str.replace(no_punctuation_regex,'',regex=True)
 
+reviews = reviews[:5]
+# no_punctuation_regex = r'[-.?!,:;()|0-9]'
+
+reviews.info()
 punctuation = re.compile(r'-.?!,:;()|0-9')
-'''
-var = 'arremanguala arrepuajala si no se jaja ajaj okas arre nono si no claro miamor, no tengo miamor'
-print(stopwords.words('english'))
-tokenizado = word_tokenize(var)
-fdist = FreqDist()
-stopspanish = stopwords.words('spanish')
-for t in tokenizado:
-    if(t not in stopspanish):
-        fdist[t] += 1
-print(fdist.N,"HOLACOMOESTA             N",fdist.B)
-'''
+
+# stopspanish = stopwords.words('spanish')
+
 stop_words = set(stopwords.words('english'))
-print('dont' in stop_words)
-# print(stop_words)
+print(stop_words,'\n\n\n')
+# stop_words.add("'")
+# stop_words.add("’")
+def convert_word(word):
+    if word in words.words():
+        return word
+    else:
+        return re.sub(r'([a-z])\1+', r'\1', word)
+    
 def cleanStringFile(row):
     if(row.text is np.nan):
         return []
 
     print(row.text)
     text_tokens = word_tokenize(row.text) 
-    text_tokens = [t for t in text_tokens if  t not in stop_words]
+    text_tokens = [t for t in text_tokens if  t not in stop_words and len(t) > 1]
     text_tokens = [stem.lemmatize(t) for t in text_tokens]
-    # li = []
-    # for i in range(len(counts[0])):
-    #     li.append([row.id,row.key,counts[0][i],counts[1][i]])
-    # return li
     print(text_tokens)
-    quit()
+    #takes too long
+    text_tokens = [convert_word(t) for t in text_tokens]
+
+    fdist = FreqDist()
+    for t in text_tokens:
+        fdist[t] +=1
+
+    li = []
+    print(row.id)
+    for item,count in fdist.items():
+        li.append([row.id,row.key,item,count,row.stars])
+        # print(item,count)
+
+    return li
 
 
+list_train_data = list(itertools.chain.from_iterable(reviews))
+reviews_transformed = pd.DataFrame(reviews, columns = ['id','key','word','count','score'])
 reviews = reviews.apply(cleanStringFile, axis=1)
-print(stopwords.words('english'))
 
 word_lem = WordNetLemmatizer()
 print(wordnet)
