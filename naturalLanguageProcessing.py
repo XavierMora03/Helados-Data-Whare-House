@@ -14,14 +14,8 @@ import itertools
 
 stem = WordNetLemmatizer()
 reviews = pd.read_csv('reviews_clean.csv')
-
-reviews = reviews[:5]
 # no_punctuation_regex = r'[-.?!,:;()|0-9]'
-
-reviews.info()
 punctuation = re.compile(r'-.?!,:;()|0-9')
-
-# stopspanish = stopwords.words('spanish')
 
 stop_words = set(stopwords.words('english'))
 print(stop_words,'\n\n\n')
@@ -39,26 +33,19 @@ def cleanStringFile(row):
     if(row.text is np.nan):
         return []
 
-    print(row.text)
     text_tokens = word_tokenize(row.text, language='english') 
-    print(text_tokens,"BEFORE \n\n\n")
     text_tokens = [t for t in text_tokens if  t not in stop_words and len(t) > 2 and  not t.__contains__("'")]
-    print(text_tokens)
     text_tokens = [stem.lemmatize(t) for t in text_tokens]
     # text_tokens = [t for t in text_tokens if  t not in stop_words and len(t) > 2]
     # text_tokens = [x for x in text_tokens if x in words.words()]
-    print(text_tokens)
-
     fdist = FreqDist()
 
     for t in text_tokens:
         fdist[t] +=1
 
     li = []
-    print(row.id)
     for item,count in fdist.items():
         new_row = [row.id,row.key,item,count,row.stars]
-        # print(new_row)
         li.append(new_row)
 
     return li
