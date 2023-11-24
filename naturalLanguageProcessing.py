@@ -33,35 +33,39 @@ def convert_word(word):
     else:
         return re.sub(r'([a-z])\1+', r'\1', word)
     
+
+print("n't" in stop_words)
 def cleanStringFile(row):
     if(row.text is np.nan):
         return []
 
     print(row.text)
-    text_tokens = word_tokenize(row.text) 
-    text_tokens = [t for t in text_tokens if  t not in stop_words and len(t) > 1]
-    text_tokens = [stem.lemmatize(t) for t in text_tokens]
+    text_tokens = word_tokenize(row.text, language='english') 
+    print(text_tokens,"BEFORE \n\n\n")
+    text_tokens = [t for t in text_tokens if  t not in stop_words and len(t) > 2 and  not t.__contains__("'")]
     print(text_tokens)
-    #takes too long
-    text_tokens = [convert_word(t) for t in text_tokens]
+    text_tokens = [stem.lemmatize(t) for t in text_tokens]
+    # text_tokens = [t for t in text_tokens if  t not in stop_words and len(t) > 2]
+    # text_tokens = [x for x in text_tokens if x in words.words()]
+    print(text_tokens)
 
     fdist = FreqDist()
+
     for t in text_tokens:
         fdist[t] +=1
 
     li = []
     print(row.id)
     for item,count in fdist.items():
-        li.append([row.id,row.key,item,count,row.stars])
-        # print(item,count)
+        new_row = [row.id,row.key,item,count,row.stars]
+        # print(new_row)
+        li.append(new_row)
 
     return li
 
 
-list_train_data = list(itertools.chain.from_iterable(reviews))
-reviews_transformed = pd.DataFrame(reviews, columns = ['id','key','word','count','score'])
-reviews = reviews.apply(cleanStringFile, axis=1)
-
-word_lem = WordNetLemmatizer()
-print(wordnet)
+list_train_data = reviews.apply(cleanStringFile, axis=1)
+list_train_data = list(itertools.chain.from_iterable(list_train_data))
+reviews_transformed = pd.DataFrame(list_train_data, columns = ['id','key','word','count','score'])
+reviews_transformed.to_csv('reviews_transformed.csv',index=False)
 

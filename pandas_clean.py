@@ -22,7 +22,7 @@ def transformReviews(df,lables):
         # df[t] = df[t].str.replace("[^\w\s\']",'',regex=True)
         # df[t] = df[t].str.replace(r'([a-z])\1+', r'\1', regex=True)
         # df[t] = df[t].str.replace(r"['-_/\|’]",' ',regex=True)
-        df[t] = df[t].str.replace("[^\w\s'’]",'',regex=True)
+        df[t] = df[t].str.replace("[^\w\s'’]|[\d]",'',regex=True)
         df[t] = df[t].str.replace(r"[\\\\]",'',regex=True)
         # df[t] = df[t].str.replace(r"[-.?'!,:;()|0-9]",'',regex=True)
 
