@@ -44,5 +44,11 @@ reviews_transformed = pd.DataFrame(list_train_data, columns = ['id','key','words
 reviews_transformed =  reviews_transformed.merge(products[['key','ingredients']], how='left', on='key')
 reviews_transformed = reviews_transformed.drop(labels = ['id','key'],axis=1)
 
-reviews_transformed.to_csv('ingredientes-words_per_review.csv',index=False)
+print(reviews_transformed)
+reviews_transformed.info()
+
+# reviews_transformed =  reviews_transformed.dropna(subset='words', how= 'any', axis=1)
+reviews_transformed.to_csv('ingredientes_words_per_review.csv',encoding='utf-8', index=False)
+
+pd.read_csv('ingredientes_words_per_review.csv').info()
 
