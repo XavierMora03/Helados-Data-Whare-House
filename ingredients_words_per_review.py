@@ -3,13 +3,11 @@
 #gone going should be maped into go
 import pandas as pd
 from nltk.tokenize import word_tokenize
-from nltk.probability import FreqDist
 from nltk.stem import WordNetLemmatizer
 import numpy as np
-from nltk.stem import wordnet, WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords, words
 import re
-import itertools
 
 stem = WordNetLemmatizer()
 reviews = pd.read_csv('reviews_clean.csv')
