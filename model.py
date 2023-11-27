@@ -9,6 +9,4 @@ labels = ['words','ingredients']
 for l in labels:
     reviews[l] = reviews[l].map(lambda x:  np.array(x.split(','),dtype='S'))
 
-# reviews = reviews.dropna(how='any',axis=0)
-
 print(reviews.loc[0])
