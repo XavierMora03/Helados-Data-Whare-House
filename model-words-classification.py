@@ -26,14 +26,15 @@ cv = CountVectorizer()
 #stars
 scale = MinMaxScaler()
 
-# df.ingredients = cv.fit_transform(df.ingredients)
-# df.words = Tfid.fit_transform(df.words)
 
-# df.stars = df.stars.astype(float)
+#the columns transofrmer does not work rigth now, I dont know why
+words = Tfid.fit_transform(np.array(df['words']))
+ingredientes = cv.fit_transform(df['ingredients'])
+# stars = np.array(scale.fit_transform(df[['stars']]),dtype='i')
+stars = np.array(df.stars,dtype='i')
+print(np.info(stars),np.info(words))
 
-# df.stars = scale.fit_transform(df[['stars']])
-# df.words = Tfid.fit_transform(np.array(df.words))
-# df.ingredients = cv.fit_transform(df.ingredients)
+
 
 preprocessing = ColumnTransformer([
     ("ingredients", cv, ['ingredients']),
@@ -42,33 +43,25 @@ preprocessing = ColumnTransformer([
     # ("stars",MinMaxScaler(), ['stars'])
     # ])
 
-# print(df)
-dd = preprocessing.fit_transform(df)
-print(dd.shape())
-quit() 
-dd = pd.DataFrame(dd, columns=df.getfe)
-df_x = df[['ingredients','stars']]
-df_y = df['words']
+
+# df_x = df[['ingredients','stars']]
+# df_y = df['words']
 
 
+type(stars)
+x_train, x_test, y_train, y_test = train_test_split(words,stars, test_size = 0.2, random_state=4)
 
-x_train, x_test, y_train, y_test = train_test_split(df_x,df_y, test_size = 0.2, random_state=4)
+print(x_train,y_train)
 
-print(df_x)
 
 # x_trainCv = cv.fit_transform(x_train['ingredients'])
 # print(cv.get_feature_names_out())
-mnb = LinearSVC()
+# mnb = LinearSVC()
+mnb = MultinomialNB()
 mnb.fit(x_train, y_train)
 predictions = mnb.predict(x_test)
 score = average_precision_score(y_test,predictions)
 print(score)
 # print(x_trainCv, x_trainCv.toarray())
-quit()
 
-print(df.loc[0],type(df[0][0]))
-encoder = OneHotEncoder()
 
-x = encoder.fit(np.array(df.words).reshape(1,-1))
-print(encoder.categories_)
-# print(df.loc[0],type(df[0][0][0]))
